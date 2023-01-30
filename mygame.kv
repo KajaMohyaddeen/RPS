@@ -1,0 +1,930 @@
+#:import hexc kivy.utils.get_color_from_hex
+#:import c color
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import Factory kivy.factory.Factory
+#:import gb gb
+#:import CardTransition kivy.uix.screenmanager.CardTransition
+#:import FadeTransition  kivy.uix.screenmanager.FadeTransition
+#:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import SwapTransition kivy.uix.screenmanager.SwapTransition
+GameWindow:
+    
+<GameWindow>:
+    
+    #SplashWindow:
+    FirstWindow:
+    InfoWindow:
+    SecondWindow:
+    ThirdWindow:
+    FourthWindow:
+    FifthWindow:
+                               
+#Rounded Blue Button Class
+<Transparent_Button@Button>:    
+    canvas.before:
+        Color:
+            rgba:self.clr_before
+        RoundedRectangle:
+            pos:self.pos
+            size:self.size
+            radius:[20]
+            
+    clr_before:(0,0,0,.6)
+    clr_after:(1,1,1,.6)
+    clr:(0,0,0,.6)
+    outline_color:c.BLACK.hex()
+    outline_width:5
+    background_normal:''
+    background_color:(0,0,0,0)
+    font_name:'Fonts/CaviarDreams.ttf'
+    background_down:'Images/clickblue.png'
+    on_press:
+        self.clr=self.clr_before
+        self.clr_before=self.clr_after
+    on_release:
+        self.clr_before = self.clr
+        
+
+<Blast>:
+    text: ""
+    on_press: gif.anim_delay = 0.10
+    on_press: gif._coreimage.anim_reset(True)
+    pos_hint:{"center_x":0.5, "center_y":0.80}
+    background_color:0,0,0,0
+    background_normal:''
+    Image:
+        source:'Images/blast.png'
+        size:gif.size
+        pos:gif.pos[0],gif.pos[1]-150
+    Image:
+        id: gif
+        source: 'Images/blast.gif'
+        center: self.parent.center
+        size:500,500
+        allow_stretch: True
+        anim_delay: -1
+        anim_loop: 1
+
+  
+# Icon for Splash Screen 
+<Rps>:
+    source:''
+    size_hint:.2,.1
+    angle:360
+    background_color:(0,0,0,0)
+    background_normal:''
+    
+    canvas.before:
+
+        PushMatrix 
+        Rotate:
+            angle:root.angle
+            origin: self.center
+           
+    canvas.after:
+        PopMatrix
+        
+    canvas:
+        Rectangle:
+            source:self.source
+            size:self.size
+            pos:self.pos           
+        
+    on_release:
+        self.animate_rotate(self)
+    
+# Popup Window 
+<MyPopup>:
+    title: ""              
+    separator_height:0
+    size_hint: None, None
+    
+    canvas.before:
+        PushMatrix
+        Color:
+            rgba:0,0,0,0.6
+        RoundedRectangle:
+            size:self.size
+            pos:self.pos
+            radius:[50]
+        PopMatrix
+    
+    title:':)'
+    font_name:gb.wingding
+    auto_dismiss:False
+    size_hint:0.7,0.3
+    pos_hint:{'center_x':0.5,'center_y':0.5}
+    background_normal:''
+    background_color:(0,0,0,0)
+    outline_color:c.BLACK.hex()
+    outline_width:5
+
+                       
+    FloatLayout:
+
+        Label:
+            id:'Label'
+            text:'DO  YOU  WANT  A  \n  NEW  GAME ?  '
+            font_name:gb.bebas
+            font_size:dp(25)
+            outline_color:c.BLACK.hex()
+            outline_width:5
+            pos_hint:{'x':0,'y':0.2}
+    
+        Transparent_Button:
+            text:'YES'
+            clr_before:0,1,0,.6
+            clr_after:1,1,1,.6
+            pos_hint:{'x':0.1,'y':0.1}
+            font_name:gb.bebas
+            size_hint:0.3,0.2
+            outline_color:c.BLACK.hex()
+            outline_width:5
+            on_release:
+                root.popup_dismiss(True)
+                app.root.current= 'infowindow'
+                                            
+        Transparent_Button:
+            text:'NO'
+            clr_before:1,0,0,.6
+            clr_after:1,1,1,.6
+            pos_hint:{'x':0.5,'y':0.1}
+            size_hint:0.3,0.2
+            font_name:gb.bebas
+            outline_color:c.BLACK.hex()
+            outline_width:5
+            on_release:
+                root.popup_dismiss(False)
+                
+             
+<SplashWindow> :
+    my_y:0
+    FloatLayout: 
+                    
+        id:layout_main
+        canvas:
+            Color:
+                rgba:(1,1,1,.2)
+            Rectangle:
+                source:'Images/blackpaper.jpg'
+                size:self.size
+                pos:self.pos              
+
+        Image:
+            id:rocket
+            source:'Images/rocket.png'
+            size_hint:.5,.7
+            pos_hint:{'center_x':0,'center_y':0}
+            
+
+        Label:
+            text:'ROCK'
+            id:text1
+            font_name:gb.caviar
+            font_size:dp(25)
+            pos_hint:{'center_x':0,'center_y':.55}
+            outline_width:2
+            outline_color:hexc(c.GREY7.hex())
+            
+            
+        Label:
+            text:'PAPERS'
+            id:text2          
+            font_name:gb.caviar
+            font_size:dp(25)
+            pos_hint:{'center_x':0,'center_y':.50}
+            outline_width:2
+            outline_color:hexc(c.GREY7.hex())
+ 
+        Label:
+            text:'SCISSORS'
+            id:text3
+            font_name:gb.caviar
+            font_size:dp(25)
+            pos_hint:{'center_x':0,'center_y':.45}
+            outline_width:2
+            outline_color:hexc(c.GREY7.hex())
+            
+                                
+        Transparent_Button:
+            text:'NEXT'
+            disabled:False
+            pos_hint:{'x':0.1,'y':0.09}
+            size_hint:0.2,.1
+            opacity:0
+            on_release:
+                root.manager.transition = FadeTransition(duration=1)
+                root.manager.transition.direction = 'left'
+                app.root.current='firstwindow'
+    
+    
+<InfoWindow>:
+    name:'infowindow'
+    
+    canvas:
+        PushMatrix
+        Rectangle:
+            size:self.size
+            pos:self.pos
+            source:'Images/blackpaper.jpg'
+        PopMatrix
+        
+    BoxLayout:
+        
+        canvas:
+            PushMatrix
+            Color:
+                rgba:0,0,0,.6
+            RoundedRectangle:
+                size:self.size
+                pos:self.pos
+                radius:[20]
+            PopMatrix
+            
+        spacing:10
+        padding:60
+        orientation:'vertical'
+        size_hint:0.65,0.4
+        pos_hint:{'center_x':.5,'center_y':.5}
+        
+        Label:   
+            text:'CHOOSE POINTS'
+            font_name:gb.caviar
+            font_size:60
+            outline_color:c.BLACK.hex()
+            outline_width:2
+            
+        BoxLayout:
+            orientation:'horizontal'
+            spacing:20
+                       
+            Label:
+
+                font_name:gb.caviar
+                outline_color:c.BLACK.hex()
+                outline_width:3
+                background_color:0,0,0,0
+                background_normal:''
+                text:'Max-Points'
+                
+            Button:
+                canvas.before:
+                    Color:
+                        rgb:hexc(c.TEAL.hex())
+                    RoundedRectangle:
+                        pos:self.pos
+                        size:self.size
+                        radius:[100]
+                id:points
+                font_name:gb.seasrn
+                size_hint:None,1
+                width:200
+                outline_color:c.BLACK.hex()
+                outline_width:4
+                font_size:dp(20)
+                background_color:0,0,0,0
+                background_normal:''
+                markup:True
+                text:'[b]'+str(max_points.value)+'[b]'
+
+                
+                
+        Slider:      # maxpoints Bar
+            id:max_points
+            min:1
+            step:1
+            max:30
+            value:10
+            on_value:root.assign_maxpoints(*args)
+            
+        Button:  
+            canvas.before:
+                RoundedRectangle:
+                    source:self.src
+                    radius:[30]
+                    size:self.size
+                    pos:self.pos
+      
+            text:'START GAME'
+            font_name:gb.caviar
+            background_color:(0,0,0,0)
+            background_normal:''
+            outline_color:c.BLACK.hex()
+            outline_width:5
+            src:'Images/orange.jpeg'
+            on_press:self.src = 'Images/clickblue.png'
+            on_release:
+                root.manager.transition = FadeTransition(duration=1)
+                root.manager.transition.direction = 'left'
+                app.root.current='secondwindow'
+                self.src = 'Images/orange.jpeg'
+ 
+    
+#First Home Window
+<FirstWindow>:
+    
+    name:'firstwindow'
+    popob:Factory.MyPopup()
+    FloatLayout:
+            
+        canvas:
+            Rectangle:
+                source:'Images/blackpaper.jpg'
+                pos: self.pos
+                size: self.size
+                
+        Button:           #scissors  icon design 
+            canvas.before:    
+                Rectangle:
+                    source:'Images/scissors.png'  
+                    pos: self.pos
+                    size: self.size
+            background_normal:''
+            background_color:(0,0,0,0)
+            size_hint:.2,.1
+            pos_hint:{'x':.2,'y':.1}
+            on_press:root.wiggle_once(self)
+     
+     
+        Button:           #papers  icon design  
+            canvas.before:     
+                Rectangle:
+                    source:'Images/paper.png'  
+                    pos: self.pos
+                    size: self.size
+            background_normal:''
+            background_color:(0,0,0,0)
+            size_hint:.2,.1
+            pos_hint:{'x':.3,'y':.8}
+            on_press:root.wiggle_once(self)
+            
+        Button:           #rock  icon design  
+            canvas.before:     
+                Rectangle:
+                    source:'Images/rock.png'  
+                    pos: self.pos
+                    size: self.size
+            background_normal:''
+            background_color:(0,0,0,0)
+            size_hint:.15,.075
+            pos_hint:{'x':.7,'y':.2}
+            on_press:root.wiggle_once(self)
+            
+        GridLayout:    #Option Menu bar
+            
+            cons:1
+            rows:4
+            size_hint:0.5,0.3
+            spacing:20
+            padding:20
+            pos_hint:{'center_x':.5,'center_y':.5}
+        
+            Transparent_Button:  # Play Button
+            
+                text:'PLAY'
+              
+                on_release: 
+                    root.manager.transition = FadeTransition(duration=1)
+                    root.manager.transition.direction = 'left'
+                    root.popob.popup_open(root)                  
+                                        
+                Image:
+                    source:'Images/play.png'
+                    size:dp(50),self.parent.height/1.5
+                    pos:self.parent.pos[0]+dp(10),self.parent.pos[1]+self.parent.height/2-self.height/2
+                     
+            Transparent_Button:   # Resume Button
+            
+                id:resume
+                text:'RESUME'
+                on_release:
+                    app.root.current= 'secondwindow'
+                    root.manager.transition = CardTransition(duration=1)
+                    root.manager.transition.direction = 'left'        
+                Image:
+                    source:'Images/resume.png'
+                    size:dp(50),self.parent.height/1.7
+                    pos:self.parent.pos[0]+dp(10),self.parent.pos[1]+self.parent.height/2-self.height/2
+                   
+              
+            Transparent_Button:    # Setting Button  
+            
+                text:'SETTINGS'
+                on_release:
+                    app.root.current = 'thirdwindow'
+                    root.manager.transition = FadeTransition(duration=.5)
+                    root.manager.transition.direction = 'left'
+                Image:
+                    source:'Images/sett.png'
+                    size:dp(50),self.parent.height/1.7
+                    pos:self.parent.pos[0]+dp(10),self.parent.pos[1]+self.parent.height/2-self.height/2
+                    
+            Transparent_Button:  
+                text:'HELP'
+                on_release:
+                    app.root.current = 'fifthwindow'
+                    root.manager.transition = FadeTransition(duration=.5)
+                    root.manager.transition.direction = 'left'
+                Image:
+                    source:'Images/help.png'
+                    size:dp(50),self.parent.height/1.7
+                    pos:self.parent.pos[0]+dp(10),self.parent.pos[1]+self.parent.height/2-self.height/2
+            
+#Second Game Screen Window 
+<SecondWindow>:
+    
+    name:'secondwindow'
+    FloatLayout:
+        canvas:
+            Rectangle:
+                source:'Images/blackpaper.jpg'
+                pos: self.pos
+                size: self.size  
+        
+        BoxLayout:   
+            id:max_points_container
+            pos_hint:{'right':.95,'top':.95}
+            size_hint:.15,.07
+            orientation:'vertical'
+            spacing:10
+            padding:5
+            
+            canvas.before:
+                Color:
+                    rgb:hexc(c.LIGHTGOLDENROD4.hex())
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius:[20]
+                    
+            Label:
+                text:'max'
+                font_name:gb.caviar
+                outline_color:c.BLACK.hex()
+                outline_width:5
+                font_name:gb.bebas
+  
+            
+            Label:
+                canvas.before:
+                    RoundedRectangle:
+                        source:'Images/grey.png'
+                        size:self.size
+                        pos:self.pos
+                        radius:[20]
+                        
+                id:max_points_bar
+                size_hint:1,None
+                height:self.height
+                text:str(gb.max_points)
+                font_name:gb.caviar
+                outline_color:c.BLACK.hex()
+                outline_width:4
+                                
+        GridLayout:    #Progress bar Table
+        
+            cols:3
+            rows:2
+            padding:30
+            spacing:20
+            size_hint:0.6,0.1     
+            pos_hint:{'top':.9,'center_x':0.5} 
+   
+            canvas:
+                PushMatrix
+                Color:
+                    rgba:0,0,0,.6
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius:[30]
+                PopMatrix
+                
+            Image:
+                id:user_img
+                source:'Images/userimage.png'
+                size_hint:None,.5
+                width:dp(30)      
+               
+            Progress: #user progressbar
+            
+                id:user_progress
+                background_normal:''
+                background_color:0,0,0,0     
+                                     
+                Image:
+                    pos:self.parent.pos
+                    size:self.parent.size
+                
+                    canvas:
+                        Rectangle:
+                            source:'Images/grey.png'
+                            size:self.size
+                            pos:self.pos
+                         
+                Image:
+                    pos:self.parent.pos
+                    size:(0.01*self.parent.width)*root.user_progress,self.parent.height               
+                    canvas:
+                        Rectangle:
+                            source:'Images/green.jpg'
+                            size:self.size
+                            pos:self.pos
+                
+                                   
+            Label:               
+                id:userpoints
+                text:str(gb.user_points)
+                size_hint:.2,1
+                font_name:gb.caviar
+                outline_color:c.BLACK.hex()
+                outline_width:5
+                canvas.before:
+                    Color:
+                        rgb:hexc(c.TEAL.hex())
+                    RoundedRectangle:
+                        radius:[10]
+                        size:self.size
+                        pos:self.pos
+            
+            Image:                         
+                id:bot_img
+                source:'Images/botimage.png'
+                size_hint:None,.5
+                width:dp(30)
+                    
+            Progress:     #bot progressbar 
+            
+                id:bot_progress
+                background_normal:''
+                background_color:0,0,0,0
+                        
+                Image:
+                    pos:self.parent.pos
+                    size:self.parent.size               
+                    canvas:
+                        Rectangle:
+                            source:'Images/grey.png'
+                            size:self.size
+                            pos:self.pos
+   
+                Image:
+                    pos:self.parent.pos
+                    size:(0.01*self.parent.width)*root.bot_progress,self.parent.height         
+                    canvas:
+                        Rectangle:
+                            source:'Images/red.jpg'
+                            size:self.size
+                            pos:self.pos
+              
+            Label:
+                id:botpoints
+                text:str(gb.bot_points)
+                size_hint:0.2,1
+                font_name:gb.caviar
+                outline_color:c.BLACK.hex()
+                outline_width:5
+                canvas.before:
+                    Color:
+                        rgb:hexc(c.TEAL.hex())
+                    RoundedRectangle:
+                        radius:[10]
+                        size:self.size
+                        pos:self.pos
+                
+        FloatLayout:     # Main Panel   
+               
+            size_hint:.8,.5
+            id:mainpanel
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+            
+            canvas:
+                Color:
+                    rgba:0,0,0,0.5
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius:[40]
+            
+            Image:     # User Choice
+                id:userchoice
+                text:'usr'
+                source:'Images/user.png'
+                size_hint:0.2,0.2
+                pos_hint:{"center_x":0.2, "center_y":0.7}
+            
+            Label:
+                text:'USER'
+                id:user_name
+                font_name:gb.caviar
+                pos_hint:{"center_x":0.2, "center_y":0.6}
+                outline_color:c.GREEN.hex()
+                outline_width:2
+            
+            Image:    # Bot Choice
+                id:botchoice
+                text:'bot'      
+                source:'Images/bot.png'
+                size_hint:0.2,0.2
+                pos_hint:{"center_x":0.8,"center_y":0.7}
+                
+            Label:
+                text:'BOT'
+                id:bot_name
+                font_name:gb.caviar
+                pos_hint:{"center_x":0.8,"center_y":0.6}
+                outline_color:c.RED1.hex()
+                outline_width:2
+           
+            Button:     # Rock Image
+                canvas:          
+                    RoundedRectangle:           
+                        source:self.src
+                        size:self.size
+                        pos:self.pos
+                        radius:[80]
+                        
+                text:'ROCK'
+                font_size:0
+                id:rock
+                size:dp(50),dp(50)
+                size_hint:None,None
+                pos_hint:{"center_x":0.25, "y":0.15} 
+                background_color:(0,0,0,0)
+                background_normal:''
+                src:'Images/rock_sign.jpg'
+                
+                on_press:
+                    root.call_back(self)
+                    self.src='Images/rock_click.jpg'
+                on_release:
+                    self.src='Images/rock_sign.jpg'
+              
+            
+            Button:     # Paper Image
+                text:'PAPER'
+                font_size:0
+                id:paper
+                size:dp(50),dp(50)
+                size_hint:None,None
+                pos_hint:{"center_x":.5, "y":0.15} 
+                background_color:(0,0,0,0)
+                background_normal:''        
+                on_press:root.call_back(self)
+                src:'Images/paper_sign.jpg'
+                on_press:self.src='Images/paper_click.jpg'
+                on_release:self.src='Images/paper_sign.jpg'
+                canvas:                  
+                    RoundedRectangle:     
+                        source:self.src
+                        size:self.size
+                        pos:self.pos
+                        radius:[80]
+                        
+            Button:     # Scissors Image
+                text:'SCISSORS'
+                font_size:0
+                id:scissors
+                size:dp(50),dp(50)
+                size_hint:None,None
+                pos_hint:{"center_x":.75, "y":0.15}    
+                background_color:(0,0,0,0)
+                background_normal:'' 
+                on_press:root.call_back(self)
+                src:'Images/scissors_sign.jpg'
+                on_press:self.src='Images/scissors_click.jpg'
+                on_release:self.src='Images/scissors_sign.jpg'
+                canvas:                  
+                    RoundedRectangle:           
+                        source:self.src
+                        size:self.size
+                        pos:self.pos
+                        radius:[80]
+            
+        Transparent_Button:     # Home Button           
+            text:'HOME'
+            size_hint:0.2,.1
+            pos_hint:{'x':0.1,'y':0.1/2}
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.transition = FadeTransition(duration=1)
+                app.root.current= 'firstwindow'
+                
+
+# Third Settings Window                 
+<ThirdWindow>:
+    
+    name:'thirdwindow'
+    vol:str(int(vol_slider.value*10))
+    brght:str(int(brght_slider.value*10))
+    src :'Images/mute.png'
+    
+    FloatLayout:
+        canvas:
+            Rectangle:
+                source:'Images/blackpaper.jpg'
+                size:self.size
+                pos:self.pos
+                    
+        BoxLayout:           
+            orientation:'vertical'
+            size_hint:0.6,0.4
+            pos_hint:{'center_x':0.5,'center_y':0.55}
+            spacing:dp(10)
+            padding:dp(10)
+            
+            Label:   
+                text:'Volume'
+                font_name:'Fonts/CaviarDreams.ttf'
+                size_hint:1,None
+                height:dp(30)
+                font_size:'20sp'
+              
+                Button:
+                    canvas.before:
+                        Color:
+                            rgb:hexc(c.PLUM.hex())
+                        RoundedRectangle:
+                            pos:self.pos
+                            size:self.size
+                            radius:[50]
+                            
+                    text:root.vol
+                    font_name:'Fonts/BebasNeue-Regular.ttf'
+                    background_color:0,0,0,0
+                    background_normal:''  
+                    size_hint:None,None
+                    size:dp(30),dp(30)
+                    pos:self.parent.pos[0]+self.parent.size[0]-self.size[0],self.parent.pos[1]
+                    
+            Slider:        # Volume Bar
+                id:vol_slider
+                min:0
+                step:0.1
+                max:1
+                value:0.3
+                on_value:root.volume(*args)
+                size_hint:1,None
+                height:dp(30)
+                
+            Label:
+                text:'Brightness'
+                font_name:'Fonts/CaviarDreams.ttf'
+                size_hint:1,None
+                height:dp(30)
+                font_size:'20sp'
+                
+                Button:
+                    canvas.before:
+                        Color:
+                            rgba:hexc(c.TEAL.hex())
+                        RoundedRectangle:
+                            pos:self.pos
+                            size:self.size
+                            radius:[50]
+                            
+                    text:str(root.brght)
+                    font_name:'Fonts/BebasNeue-Regular.ttf'
+                    background_color:0,0,0,0
+                    background_normal:''  
+                    size_hint:None,None
+                    size:dp(30),dp(30)
+                    pos:self.parent.pos[0]+self.parent.size[0]-self.size[0],self.parent.pos[1]
+                
+            Slider:    #Brightness Bar
+                id:brght_slider
+                min:.2
+                max:1.0
+                step:.1
+                value:1
+                on_value:root.brightness(*args)
+                size_hint:1,None
+                height:dp(30)
+                
+            Transparent_Button:
+                text:'MaxPoints'
+                id:max_points
+                size_hint:1,1                
+                on_press:                      
+                    root.manager.transition = FadeTransition(duration=1)
+                    root.manager.transition.direction = 'right'
+                    app.root.current='infowindow'
+                    
+            Transparent_Button:  # Sound Button
+            
+                text:''
+                on_press:root.Toggle()
+                
+                Image:
+                    source:root.src
+                    size_hint:None,None
+                    size:self.parent.width,self.parent.height
+                    pos:self.parent.pos
+                    #pos:self.parent.pos[0],self.parent.pos[1]+(self.parent.height/2-self.height/2)
+             
+    Transparent_Button:        
+    
+        text:'BACK'
+        size_hint:0.2,.1
+        pos_hint:{'x':0.1,'y':0.1/2}
+        on_release:
+            root.manager.transition = FadeTransition(duration=1)
+            root.manager.transition.direction = 'right'
+            app.root.current = 'firstwindow'
+            
+            
+<FourthWindow>:
+    name:'fourthwindow'
+    canvas:
+        Rectangle:
+            source:'Images/blackpaper.jpg'
+            pos: self.pos
+            size: self.size
+    
+    FloatLayout:        
+        size_hint:0.7,0.5
+        pos_hint:{'center_x':0.5,'center_y':0.5}
+        id:layout
+        clr:(0,0,0,.6)
+        canvas:
+            Color:
+                rgba:self.clr
+            RoundedRectangle:
+                size:self.size
+                pos:self.pos
+                radius:[20]    
+                
+        Label:
+            id:text1
+            text:'winner is'
+            font_name:gb.bebas
+            font_size:self.parent.size[1]*.05
+            pos_hint:{'center_y':0.61,'left':0.3}
+            outline_color:c.BLACK.hex()
+            outline_width:5   
+            
+        Label:
+            id:winner
+            text:gb.result
+            font_size:self.parent.size[1]*.2
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+            font_name:gb.bebas
+            outline_color:c.BLACK.hex()
+            outline_width:5
+            
+            Image:
+                source:'Images/star.png'
+                pos:winner.pos[0],winner.pos[1]
+
+            
+    Transparent_Button:
+        
+        text:'Back'
+        size_hint:0.2,.1
+        pos_hint:{'x':0.1,'y':0.1/2}
+        on_release:
+            root.manager.transition = FadeTransition(duration=1)
+            root.manager.transition.direction = 'right'
+            app.root.current = 'firstwindow'
+            
+<FifthWindow>:
+    
+    name:'fifthwindow'
+    FloatLayout:
+        canvas:
+            Rectangle:
+                source:'Images/blackpaper.jpg'
+                pos: self.pos
+                size: self.size
+                
+        FloatLayout:
+            
+            canvas.before:
+                Color:
+                    rgba:(0,0,0,.6)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius:[30]
+                    
+            size_hint:.9,.6
+            #pos:self.parent.center[0]-self.width/2,self.parent.center[1]-self.height/2
+            pos_hint:{'center_x':.5,'center_y':.5}
+            
+            Label:
+                text:'Its is a simple [i][b][color={}]\n\n Rock Paper Scissors [/i][/color][/b] we used to play this in our childhood using hands  , now we given a animated version for this game . \n\n [color={}][b]Rules :[/b][/color]\n  Rock can break the Scissors. \n  Scissors can cut the Paper. \n  Paper can Hold Rock. \n\nIn this game the bot can choose on their own, and player can choose using the buttons on the pannel. \n\nYour points are shown in the progress bar above your main panel , when you got maximum points you will be switched to result screen. \n\n'.format(c.YELLOW1.hex() ,c.PINK1.hex())
+                
+                text_size:self.size[0]-60,self.size[1]
+                pos:self.parent.x,self.parent.y+self.height-self.size[1]
+                font_name:gb.caviar
+                markup:True
+                
+        Transparent_Button:     # Home Button           
+            text:'HOME'
+            size_hint:0.2,.1
+            pos_hint:{'x':0.1,'y':0.1/2}
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.transition = FadeTransition(duration=1)
+                app.root.current= 'firstwindow'
