@@ -388,7 +388,7 @@ class GameWindow(ScreenManager):
         pass
 
 
-class mainApp(App):
+class main(App):
     # request_permissions([Permission.WRITE_EXTERNAL_STORAGE])
 
     Window.clearcolor = hexc(c.GREY7.hex())
@@ -403,4 +403,4 @@ class mainApp(App):
 
 
 if __name__ == '__main__':
-    mainApp().run()
+    main().run()
