@@ -14,19 +14,20 @@ from kivy.uix.widget import Widget
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.properties import ObjectProperty,NumericProperty
+from kivy.properties import ObjectProperty, NumericProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.utils import get_color_from_hex as hexc
 from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition, SwapTransition
+
 
 class Blast(Button):
     pass
 
 
 class MyPopup(Popup):
-    '''window_ref refers Popup's parent class window(screen) reference through that we can call manager class to change current window and refresh the properties'''
+    """ window_ref refers Popup's parent class window(screen)
+    reference through that we can call manager class to change current
+    window and refresh the properties """
 
     window_ref = None
 
@@ -51,118 +52,124 @@ class MyPopup(Popup):
 
 
 class Rps(Button):
+    anim = None
 
     def animate_rotate(self, ob):
-        anim = Animation(angle=360)
-        anim += Animation(angle=0)
-        anim.repeat = True
-        anim.start(ob)
+        self.anim = Animation(angle=360)
+        self.anim += Animation(angle=0)
+        self.anim.repeat = True
+        self.anim.start(ob)
         if ob.angle == 360:
             ob.angle = 0
 
-    def on_angle(self, item, angle):
+    @staticmethod
+    def on_angle(item, angle):
         if angle == 360:
             item.angle = 0
 
 
 # This class will show the splash screen
 class SplashWindow(Screen):
-    
     rocket_anim = None
     event = None
-    
-    def on_enter(self):        
-        x = NumericProperty(.50)
+
+    def on_enter(self):
+        self.x = NumericProperty(.50)
         self.manager.sound.play()
-        Clock.schedule_once(lambda x:self.animate_texts(),.1)
-        
-    def animate_texts(self):        
-        self.x += .35          
+        Clock.schedule_once(lambda x: self.animate_texts(), .1)
+
+    def animate_texts(self):
+        self.x += .35
         self.animate_move_texts(self.ids.text1)
         self.x += .10
         self.animate_move_texts(self.ids.text2)
         self.x += .15
-        self.animate_move_texts(self.ids.text3)       
-        #animate flew rocket hete      
+        self.animate_move_texts(self.ids.text3)
+        # animate flew rocket hete
         self.animate_rocket()
-        
-    def animate_move_texts(self,ob):
-        #anim = Animation(pos_hint={'center_x':ob.pos_hint.get('center_x'),'center_y':ob.pos_hint.get('center_y')})
-        anim = Animation(pos_hint={'center_x':ob.pos_hint.get('center_x')+self.x,'center_y':ob.pos_hint.get('center_y')},d=.2)
+
+    def animate_move_texts(self, ob):
+        # anim = Animation(pos_hint={'center_x':ob.pos_hint.get('center_x'),'center_y':ob.pos_hint.get('center_y')})
+        anim = Animation(
+            pos_hint={'center_x': ob.pos_hint.get('center_x') + self.x, 'center_y': ob.pos_hint.get('center_y')}, d=.2)
         anim.start(ob)
-        anim.bind(on_complete=lambda x,y: self.wiggle_text())
-        
+        anim.bind(on_complete=lambda x, y: self.wiggle_text())
+
     def wiggle_text(self):
-        anim = Animation(font_size=dp(25),d=.3)
-        anim += Animation(font_size=dp(30),d=.3)
+        anim = Animation(font_size=dp(25), d=.3)
+        anim += Animation(font_size=dp(30), d=.3)
         anim.start(self.ids.text1)
         anim.start(self.ids.text2)
         anim.start(self.ids.text3)
 
-    def  animate_rocket(self):
-        self.rocket_anim = Animation(pos_hint=self.ids.rocket.pos_hint)      
-        for i in range(1,11):
-            self.rocket_anim += Animation(pos_hint={'center_x':i*0.1,'center_y':i*0.1},d=.1)
-        self.rocket_anim += Animation(opacity=0,d=.1)
+    def animate_rocket(self):
+        self.rocket_anim = Animation(pos_hint=self.ids.rocket.pos_hint)
+        for i in range(1, 11):
+            self.rocket_anim += Animation(pos_hint={'center_x': i * 0.1, 'center_y': i * 0.1}, d=.1)
+        self.rocket_anim += Animation(opacity=0, d=.1)
         self.rocket_anim.start(self.ids.rocket)
-        self.rocket_anim.bind(on_complete=lambda x,y:self.close_page())
-               
+        self.rocket_anim.bind(on_complete=lambda x, y: self.close_page())
+
     def close_page(self):
-        self.event = Clock.schedule_interval(lambda dt:self.create_animation(),.1)
- 
-    def create_animation(self):        
-        #choices = ['clickblue.png','red.jpg','orange.jpeg','green.jpg','grey.png']    
-        choices =['rock_sym','paper_sym','scissors_sym']
-        for i in range(0,30):            
+        self.event = Clock.schedule_interval(lambda dt: self.create_animation(), .1)
+
+    def create_animation(self):
+        # choices = ['clickblue.png','red.jpg','orange.jpeg','green.jpg','grey.png']
+        choices = ['rock_sym', 'paper_sym', 'scissors_sym']
+        for i in range(0, 30):
             ch = random.choice(choices)
-            img =Image(source='Images/'+ch+'.jpg',size_hint=(.03,.03),pos_hint={'center_x':(i*0.08),'center_y':self.my_y},opacity=.8)
- 
+            img = Image(source='Images/' + ch + '.jpg', size_hint=(.03, .03),
+                        pos_hint={'center_x': (i * 0.08), 'center_y': self.my_y}, opacity=.8)
+
             self.add_widget(img)
             self.rain_animate(img)
-           
-        self.my_y+=0.045
-        
-        if self.my_y > 1.2:  
-            self.event.cancel()
-            Clock.schedule_once(lambda dt:self.switch_to_home(),.3)
 
-    def rain_animate(self,ob):
-        anim = Animation(pos_hint={'center_y':self.my_y},size_hint=(0.1,.1),opacity=1,duration=1)
+        self.my_y += 0.045
+
+        if self.my_y > 1.2:
+            self.event.cancel()
+            Clock.schedule_once(lambda dt: self.switch_to_home(), .3)
+
+    def rain_animate(self, ob):
+        anim = Animation(pos_hint={'center_y': self.my_y}, size_hint=(0.1, .1), opacity=1, duration=1)
         anim.start(ob)
-        
+
     def switch_to_home(self):
         self.manager.transition = WipeTransition(duration=1)
         self.manager.transition.direction = 'left'
         self.manager.current = 'firstwindow'
 
-        
+
 # Points Choosing Window1
 class InfoWindow(Screen):
 
-    def assign_maxpoints(self, *args):
+    @staticmethod
+    def assign_maxpoints(*args):
         scnd = App.get_running_app().root.get_screen('secondwindow')
         gb.max_points = args[1]
         scnd.ids.max_points_bar.text = str(gb.max_points)
 
-# Home Window            
+
+# Home Window
 class FirstWindow(Screen):
 
-    def wiggle_once(self, ob):
+    @staticmethod
+    def wiggle_once(ob):
         anim = Animation(size_hint=(ob.size_hint[0], ob.size_hint[1]), d=.1)
         anim += Animation(size_hint=(ob.size_hint[0] + 0.03, ob.size_hint[1] + 0.03), d=.1)
         anim += Animation(size_hint=(.2, .1))
         anim.start(ob)
 
+
 # Game Window
 class SecondWindow(Screen):
-    
     sound = SoundLoader.load('Music/buttonclick.mp3')
     sound2 = SoundLoader.load('Music/blast.wav')
     user_progress = ObjectProperty(0)
     bot_progress = ObjectProperty(0)
     anim_event = None
     collision = None
-    
+
     # while enter call wiggle function
     def on_enter(self):
         self.wiggle_func()
@@ -171,7 +178,7 @@ class SecondWindow(Screen):
     def wiggle_func(self):
         items = [self.ids.rock, self.ids.paper, self.ids.scissors]
 
-        if self.anim_event == None:
+        if self.anim_event is None:
             for i in items:
                 self.animate_wiggle(i)
 
@@ -212,7 +219,7 @@ class SecondWindow(Screen):
         self.collision.start(ob)
 
     def break_time(self, obj):
-        
+
         self.ids.mainpanel.remove_widget(obj)
         self.disable_options(False)
 
@@ -240,11 +247,10 @@ class SecondWindow(Screen):
 
     def call_back(self, ob):
 
-        frth = self.manager.get_screen('fourthwindow')
         thrd = self.manager.get_screen('thirdwindow')
 
-        #self.sound.volume = thrd.ids.vol_slider.value / 4
-        #self.sound.play()
+        # self.sound.volume = thrd.ids.vol_slider.value / 4
+        # self.sound.play()
 
         self.animate_collision(self.ids.userchoice)
         self.animate_collision(self.ids.botchoice)
@@ -279,9 +285,9 @@ class SecondWindow(Screen):
             self.bot_progress = gb.bot_points * 100 / gb.max_points
 
             if gb.user_points == gb.max_points:
-                gb.result = 'USER'              
+                gb.result = 'USER'
                 self.collision.bind(on_complete=lambda x, y: self.switch_to_fourth())
-               
+
             if gb.bot_points == gb.max_points:
                 gb.result = 'BOT'
 
@@ -295,22 +301,21 @@ class SecondWindow(Screen):
 
 # Settings Window
 class ThirdWindow(Screen):
-    
     count = 0
     sound = None
-    
-    def Toggle(self):
-    
+
+    def toggle(self):
+
         thrd = self.manager.get_screen('thirdwindow')
         self.count += 1
-    
+
         if self.count % 2 != 0:
             self.src = 'Images/unmute.png'
             thrd.music_stop()
         else:
             self.src = 'Images/mute.png'
             thrd.music_play()
-            
+
     def music_play(self):
         self.manager.sound.play()
 
@@ -322,12 +327,11 @@ class ThirdWindow(Screen):
 
     def brightness(self, *args):
         App.get_running_app().root.opacity = args[1]
-        #bg.set_brightness(args[1])
+        # bg.set_brightness(args[1])
 
 
 # Result window
 class FourthWindow(Screen):
-    
     success_sound = SoundLoader.load('Music/success.wav')
     failure_sound = SoundLoader.load('Music/failure.wav')
 
@@ -362,18 +366,23 @@ class FourthWindow(Screen):
 
     def result_func(self):
         self.ids.winner.text = gb.result
-        
+
+
 class FifthWindow(Screen):
     pass
-    
+
+
 class Progress(Widget):
     pass
+
 
 class Transparent_Button:
     pass
 
+
 class GameWindow(ScreenManager):
     sound = SoundLoader.load('Music/music.mp3')
+
     def __init__(self, **kwargs):
         super(GameWindow, self).__init__(**kwargs)
         pass
@@ -381,14 +390,14 @@ class GameWindow(ScreenManager):
 
 class MyGameApp(App):
     # request_permissions([Permission.WRITE_EXTERNAL_STORAGE])
-    
+
     Window.clearcolor = hexc(c.GREY7.hex())
-    
+
     def build(self):
         if platform != "android":
             Layout = FloatLayout()
-            Layout.add_widget(Label(text="ONLY SUPPORTED FOR ANDROID",pos_hint={'center_x':.5,'center_y':.5},
-                               font_name='Fonts/CaviarDreams.ttf'))
+            Layout.add_widget(Label(text="ONLY SUPPORTED FOR ANDROID", pos_hint={'center_x': .5, 'center_y': .5},
+                                    font_name='Fonts/CaviarDreams.ttf'))
             return Layout
         return GameWindow()
 
