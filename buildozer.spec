@@ -13,7 +13,7 @@ package.domain = com.kaja.app
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpeg,jpg,kv,gif,ttf,otf,wav,mp3
+source.include_exts = py,png,jpeg,jpg,kv,gif,ttf,otf,wav,mp3,atlas
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -44,10 +44,10 @@ requirements = python3,kivy
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/presplash.gif
+#presplash.filename = %(source.dir)s/presplash.gif
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/logo.jpeg
+#icon.filename = %(source.dir)s/logo.jpeg
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
