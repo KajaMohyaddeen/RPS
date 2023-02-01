@@ -1,6 +1,8 @@
 import gb
+import kivy
 import random
 import color as c
+kivy.require('1.9.1')
 from kivy.app import App
 from plyer import vibrator
 from kivy.clock import Clock
