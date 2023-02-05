@@ -4,7 +4,7 @@ import random
 import color as c
 kivy.require('1.9.1')
 from kivy.app import App
-from plyer import vibrator
+#from plyer import vibrator
 from kivy.clock import Clock
 from kivy.utils import platform
 from kivy.metrics import dp
@@ -303,7 +303,7 @@ class SecondWindow(Screen):
 
 # Settings Window
 class ThirdWindow(Screen):
-    count = 0
+    count = 1
     sound = None
 
     def toggle(self):
@@ -339,7 +339,7 @@ class FourthWindow(Screen):
 
     def on_enter(self):
         self.animate_color(self.ids.layout)
-        vibrator.pattern(pattern=(0, 2), repeat=-1)
+        #vibrator.pattern(pattern=(0, 2), repeat=-1)
         self.result_func()
 
     def animate_color(self, ob):
