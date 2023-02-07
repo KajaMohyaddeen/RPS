@@ -204,7 +204,7 @@ class SecondWindow(Screen):
         obj = Blast()
         self.collision.bind(on_complete=lambda x, y: self.ids.mainpanel.add_widget(obj))
 
-        obj.ids.gif.anim_delay = 0.10
+        obj.ids.gif.anim_delay = 0.05
         #obj.ids.gif._coreimage.anim_reset(True)
         self.sound2.volume = 0.5
         self.sound2.play()
