@@ -3,7 +3,7 @@ import kivy
 import random
 import color as c
 from kivy.app import App
-#from plyer import vibrator
+from plyer import vibrator
 from kivy.clock import Clock
 from kivy.utils import platform
 from kivy.metrics import dp
