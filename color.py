@@ -1,15 +1,18 @@
 """Provide RGB color constants and a colors dictionary with
 elements formatted: colors[colorname] = CONSTANT"""
 from collections import namedtuple, OrderedDict
-Color = namedtuple('RGB','red, green, blue')
-colors = {} #dict of colors
+
+Color = namedtuple('RGB', 'red, green, blue')
+colors = {}  # dict of colors'
+
+
 class RGB(Color):
     def hex(self):
-        '''Returns color in hex format'''
-        return '#{:02X}{:02X}{:02X}'.format(self.red,self.green,self.blue)
-        
+        """Returns color in hex format"""
+        return '#{:02X}{:02X}{:02X}'.format(self.red, self.green, self.blue)
 
-#Color Contants
+
+# Color Contants
 ALICEBLUE = RGB(240, 248, 255)
 ANTIQUEWHITE = RGB(250, 235, 215)
 ANTIQUEWHITE1 = RGB(255, 239, 219)
@@ -564,7 +567,7 @@ YELLOW1 = RGB(255, 255, 0)
 YELLOW2 = RGB(238, 238, 0)
 YELLOW3 = RGB(205, 205, 0)
 YELLOW4 = RGB(139, 139, 0)
-#Add colors to colors dictionary
+# Add colors to colors dictionary
 colors['aliceblue'] = ALICEBLUE
 colors['antiquewhite'] = ANTIQUEWHITE
 colors['antiquewhite1'] = ANTIQUEWHITE1

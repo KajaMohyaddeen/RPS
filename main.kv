@@ -20,7 +20,7 @@
     FifthWindow:
                                
 #Rounded Blue Button Class
-<Transparent_Button@Button>:    
+<TransparentButton>:
     canvas.before:
         Color:
             rgba:self.clr_before
@@ -37,6 +37,7 @@
     background_normal:''
     background_color:(0,0,0,0)
     font_name:'Fonts/CaviarDreams.ttf'
+    font_size:sp(30)
     background_down:'Images/clickblue.png'
     on_press:
         self.clr=self.clr_before
@@ -46,24 +47,10 @@
         
 
 <Blast>:
-    text: ""
-    #on_press: gif.anim_delay = 0.10
-    #on_press: gif._coreimage.anim_reset(True)
-    pos_hint:{"center_x":0.5, "center_y":0.80}
-    background_color:0,0,0,0
-    background_normal:''
-    Image:
-        source:'Images/blast.png'
-        size:gif.size
-        pos:gif.pos[0],gif.pos[1]-150
-    Image:
-        id: gif
-        source: 'Images/blast.zip'
-        center: self.parent.center
-        size:500,500
-        allow_stretch: True
-        anim_delay: -1
-        anim_loop: 1
+    source: 'Images/blast.png'
+    size_hint:.4,.4
+    pos_hint:{"center_x":.5,"center_y":.7}
+
 
   
 # Icon for Splash Screen 
@@ -126,12 +113,12 @@
             id:'Label'
             text:'DO  YOU  WANT  A  \n  NEW  GAME ?  '
             font_name:gb.bebas
-            font_size:dp(25)
+            font_size:sp(25)
             outline_color:c.BLACK.hex()
             outline_width:5
             pos_hint:{'x':0,'y':0.2}
     
-        Transparent_Button:
+        TransparentButton:
             text:'YES'
             clr_before:0,1,0,.6
             clr_after:1,1,1,.6
@@ -144,7 +131,7 @@
                 root.popup_dismiss(True)
                 app.root.current= 'infowindow'
                                             
-        Transparent_Button:
+        TransparentButton:
             text:'NO'
             clr_before:1,0,0,.6
             clr_after:1,1,1,.6
@@ -181,7 +168,7 @@
             text:'ROCK'
             id:text1
             font_name:gb.caviar
-            font_size:dp(25)
+            font_size:sp(25)
             pos_hint:{'center_x':0,'center_y':.55}
             outline_width:2
             outline_color:hexc(c.GREY7.hex())
@@ -191,7 +178,7 @@
             text:'PAPERS'
             id:text2          
             font_name:gb.caviar
-            font_size:dp(25)
+            font_size:sp(25)
             pos_hint:{'center_x':0,'center_y':.50}
             outline_width:2
             outline_color:hexc(c.GREY7.hex())
@@ -200,13 +187,13 @@
             text:'SCISSORS'
             id:text3
             font_name:gb.caviar
-            font_size:dp(25)
+            font_size:sp(25)
             pos_hint:{'center_x':0,'center_y':.45}
             outline_width:2
             outline_color:hexc(c.GREY7.hex())
             
                                 
-        Transparent_Button:
+        TransparentButton:
             text:'NEXT'
             disabled:False
             pos_hint:{'x':0.1,'y':0.09}
@@ -250,7 +237,7 @@
         Label:   
             text:'CHOOSE POINTS'
             font_name:gb.caviar
-            font_size:60
+            font_size:sp(30)
             outline_color:c.BLACK.hex()
             outline_width:2
             
@@ -281,7 +268,7 @@
                 width:200
                 outline_color:c.BLACK.hex()
                 outline_width:4
-                font_size:dp(20)
+                font_size:sp(20)
                 background_color:0,0,0,0
                 background_normal:''
                 markup:True
@@ -379,7 +366,7 @@
             padding:20
             pos_hint:{'center_x':.5,'center_y':.5}
         
-            Transparent_Button:  # Play Button
+            TransparentButton:  # Play Button
             
                 text:'PLAY'
               
@@ -393,7 +380,7 @@
                     size:dp(50),self.parent.height/1.5
                     pos:self.parent.pos[0]+dp(10),self.parent.pos[1]+self.parent.height/2-self.height/2
                      
-            Transparent_Button:   # Resume Button
+            TransparentButton:   # Resume Button
             
                 id:resume
                 text:'RESUME'
@@ -407,7 +394,7 @@
                     pos:self.parent.pos[0]+dp(10),self.parent.pos[1]+self.parent.height/2-self.height/2
                    
               
-            Transparent_Button:    # Setting Button  
+            TransparentButton:    # Setting Button
             
                 text:'SETTINGS'
                 on_release:
@@ -419,7 +406,7 @@
                     size:dp(50),self.parent.height/1.7
                     pos:self.parent.pos[0]+dp(10),self.parent.pos[1]+self.parent.height/2-self.height/2
                     
-            Transparent_Button:  
+            TransparentButton:
                 text:'HELP'
                 on_release:
                     app.root.current = 'fifthwindow'
@@ -448,15 +435,7 @@
             orientation:'vertical'
             spacing:10
             padding:5
-            
-            canvas.before:
-                Color:
-                    rgb:hexc(c.LIGHTGOLDENROD4.hex())
-                RoundedRectangle:
-                    size:self.size
-                    pos:self.pos
-                    radius:[20]
-                    
+
             Label:
                 text:'max'
                 font_name:gb.caviar
@@ -701,7 +680,7 @@
                         pos:self.pos
                         radius:[80]
             
-        Transparent_Button:     # Home Button           
+        TransparentButton:     # Home Button
             text:'HOME'
             size_hint:0.2,.1
             pos_hint:{'x':0.1,'y':0.1/2}
@@ -772,7 +751,7 @@
                 font_name:'Fonts/CaviarDreams.ttf'
                 size_hint:1,None
                 height:dp(30)
-                font_size:'20sp'
+                font_size:"30sp"
                 
                 Button:
                     canvas.before:
@@ -801,7 +780,7 @@
                 size_hint:1,None
                 height:dp(30)
                 
-            Transparent_Button:
+            TransparentButton:
                 text:'MaxPoints'
                 id:max_points
                 size_hint:1,1                
@@ -810,7 +789,7 @@
                     root.manager.transition.direction = 'right'
                     app.root.current='infowindow'
                     
-            Transparent_Button:  # Sound Button
+            TransparentButton:  # Sound Button
             
                 text:''
                 on_press:root.toggle()
@@ -822,7 +801,7 @@
                     pos:self.parent.pos
                     #pos:self.parent.pos[0],self.parent.pos[1]+(self.parent.height/2-self.height/2)
              
-    Transparent_Button:        
+    TransparentButton:
     
         text:'BACK'
         size_hint:0.2,.1
@@ -835,6 +814,7 @@
             
 <FourthWindow>:
     name:'fourthwindow'
+    size_hint:1,1
     canvas:
         Rectangle:
             source:'Images/blackpaper.jpg'
@@ -842,10 +822,11 @@
             size: self.size
     
     FloatLayout:        
-        size_hint:0.7,0.5
+        size_hint:.7,.5
         pos_hint:{'center_x':0.5,'center_y':0.5}
         id:layout
         clr:(0,0,0,.6)
+
         canvas:
             Color:
                 rgba:self.clr
@@ -877,7 +858,7 @@
                 pos:winner.pos[0],winner.pos[1]
 
             
-    Transparent_Button:
+    TransparentButton:
         
         text:'Back'
         size_hint:0.2,.1
@@ -913,13 +894,12 @@
             
             Label:
                 text:'Its is a simple [i][b][color={}]\n\n Rock Paper Scissors [/i][/color][/b] we used to play this in our childhood using hands  , now we given a animated version for this game . \n\n [color={}][b]Rules :[/b][/color]\n  Rock can break the Scissors. \n  Scissors can cut the Paper. \n  Paper can Hold Rock. \n\nIn this game the bot can choose on their own, and player can choose using the buttons on the pannel. \n\nYour points are shown in the progress bar above your main panel , when you got maximum points you will be switched to result screen. \n\n'.format(c.YELLOW1.hex() ,c.PINK1.hex())
-                
                 text_size:self.size[0]-60,self.size[1]
                 pos:self.parent.x,self.parent.y+self.height-self.size[1]
                 font_name:gb.caviar
                 markup:True
                 
-        Transparent_Button:     # Home Button           
+        TransparentButton:     # Home Button
             text:'HOME'
             size_hint:0.2,.1
             pos_hint:{'x':0.1,'y':0.1/2}

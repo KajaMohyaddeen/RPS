@@ -1,26 +1,19 @@
 import gb
 import random
-import color as c
 from kivy.app import App
-#from plyer import vibrator
-from kivy.clock import Clock
-from kivy.utils import platform
 from kivy.metrics import dp
-from kivy.uix.label import Label
+from kivy.clock import Clock
 from kivy.uix.image import Image
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.animation import Animation
-from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
-from kivy.properties import ObjectProperty, NumericProperty
-from kivy.uix.floatlayout import FloatLayout
-from kivy.utils import get_color_from_hex as hexc
+from kivy.properties import ObjectProperty, NumericProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition, SwapTransition
 
 
-class Blast(Button):
+class Blast(Image):
     pass
 
 
@@ -72,9 +65,9 @@ class Rps(Button):
 class SplashWindow(Screen):
     rocket_anim = None
     event = None
+    x = NumericProperty(.50)
 
     def on_enter(self):
-        self.x = NumericProperty(.50)
         self.manager.sound.play()
         Clock.schedule_once(lambda x: self.animate_texts(), .1)
 
@@ -85,7 +78,7 @@ class SplashWindow(Screen):
         self.animate_move_texts(self.ids.text2)
         self.x += .15
         self.animate_move_texts(self.ids.text3)
-        # animate flew rocket hete
+        # animate flew rocket here
         self.animate_rocket()
 
     def animate_move_texts(self, ob):
@@ -203,8 +196,6 @@ class SecondWindow(Screen):
         obj = Blast()
         self.collision.bind(on_complete=lambda x, y: self.ids.mainpanel.add_widget(obj))
 
-        obj.ids.gif.anim_delay = 0.05
-        #obj.ids.gif._coreimage.anim_reset(True)
         self.sound2.volume = 0.5
         self.sound2.play()
 
@@ -219,7 +210,6 @@ class SecondWindow(Screen):
         self.collision.start(ob)
 
     def break_time(self, obj):
-
         self.ids.mainpanel.remove_widget(obj)
         self.disable_options(False)
 
@@ -278,8 +268,8 @@ class SecondWindow(Screen):
 
             self.ids.userpoints.text = str(gb.user_points)
             self.ids.botpoints.text = str(gb.bot_points)
-            self.ids.userchoice.source = 'Images/' + gb.user_choice + '.png'
-            self.ids.botchoice.source = 'Images/' + gb.bot_choice + '.png'
+            self.ids.userchoice.source = 'Images/' + gb.user_choice.lower() + '.png'
+            self.ids.botchoice.source = 'Images/' + gb.bot_choice.lower() + '.png'
 
             self.user_progress = gb.user_points * 100 / gb.max_points
             self.bot_progress = gb.bot_points * 100 / gb.max_points
@@ -300,9 +290,12 @@ class SecondWindow(Screen):
 
 
 # Settings Window
+
+
 class ThirdWindow(Screen):
     count = 1
     sound = None
+    src = StringProperty("")
 
     def toggle(self):
 
@@ -325,19 +318,22 @@ class ThirdWindow(Screen):
     def volume(self, *args):
         self.manager.sound.volume = args[1]
 
-    def brightness(self, *args):
+    def brightness(*args):
         App.get_running_app().root.opacity = args[1]
         # bg.set_brightness(args[1])
 
 
 # Result window
 class FourthWindow(Screen):
-    success_sound = SoundLoader.load('Music/success.wav')
-    failure_sound = SoundLoader.load('Music/failure.wav')
+    def __init__(self, **kwargs):
+        super(FourthWindow, self).__init__(**kwargs)
+        self.success_sound = SoundLoader.load('Music/success.wav')
+        self.failure_sound = SoundLoader.load('Music/failure.wav')
 
     def on_enter(self):
-        self.animate_color(self.ids.layout)
-        #vibrator.pattern(pattern=(0, 2), repeat=-1)
+        print("entered")
+        Clock.schedule_once(lambda dt: self.animate_color(self.ids.layout), 2)
+        # vibrator.pattern(pattern=(0, 2), repeat=-1)
         self.result_func()
 
     def animate_color(self, ob):
@@ -376,7 +372,7 @@ class Progress(Widget):
     pass
 
 
-class Transparent_Button:
+class TransparentButton(Button):
     pass
 
 
@@ -388,19 +384,15 @@ class GameWindow(ScreenManager):
         pass
 
 
-class main(App):
-    # request_permissions([Permission.WRITE_EXTERNAL_STORAGE])
-
-    Window.clearcolor = hexc(c.GREY7.hex())
-
+class Main(App):
     def build(self):
-        if platform != "android":
-            Layout = FloatLayout()
-            Layout.add_widget(Label(text="ONLY SUPPORTED FOR ANDROID", pos_hint={'center_x': .5, 'center_y': .5},
-                                    font_name='Fonts/CaviarDreams.ttf'))
-            return Layout
         return GameWindow()
+    # if platform != "android":
+    #     Layout = FloatLayout()
+    #     Layout.add_widget(Label(text="ONLY SUPPORTED FOR ANDROID", pos_hint={'center_x': .5, 'center_y': .5},
+    #                             font_name='Fonts/CaviarDreams.ttf'))
+    #     return Layout
 
 
 if __name__ == '__main__':
-    main().run()
+    Main().run()
