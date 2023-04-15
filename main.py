@@ -68,7 +68,7 @@ class SplashWindow(Screen):
     x = NumericProperty(.50)
 
     def on_enter(self):
-        self.manager.sound.play()
+       
         Clock.schedule_once(lambda x: self.animate_texts(), .1)
 
     def animate_texts(self):
@@ -144,8 +144,18 @@ class InfoWindow(Screen):
 
 
 # Home Window
-class FirstWindow(Screen):
-
+class FirstWindow(Screen):    
+    flag = 1
+    def on_enter(self):
+        if self.flag:
+            Clock.schedule_once(lambda dt: self.playbg(),1)
+            self.flag = 0
+    
+    def playbg(self):
+        app = App.get_running_app()
+        thrd = self.manager.get_screen('thirdwindow')
+        thrd.toggle()
+    
     @staticmethod
     def wiggle_once(ob):
         anim = Animation(size_hint=(ob.size_hint[0], ob.size_hint[1]), d=.1)
@@ -381,10 +391,12 @@ class GameWindow(ScreenManager):
 
 
 class Main(App):
+    
     bgsound = SoundLoader.load('Music/bgmusic.wav')
-
+    fts = ObjectProperty('20sp')
+    
     def build(self):
-        self.bgsound.volume = 1
+        self.bgsound.volume = .8
         return GameWindow()
     # if platform != "android":
     #     Layout = FloatLayout()

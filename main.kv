@@ -7,20 +7,18 @@
 #:import FadeTransition  kivy.uix.screenmanager.FadeTransition
 #:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
-#:import SwapTransition kivy.uix.screenmanager.SwapTransition
 #:import SoundLoader kivy.core.audio.SoundLoader
 
 <GameWindow>:
 
-    #SplashWindow:
+    SplashWindow:
     FirstWindow:
     InfoWindow:
     SecondWindow:
     ThirdWindow:
     FourthWindow:
     FifthWindow:
-GameWindow:
-    sound:SoundLoader.load('Music/music.mp3')
+        
 
 #Rounded Blue Button Class
 <TransparentButton>:
@@ -40,11 +38,12 @@ GameWindow:
     background_normal:''
     background_color:(0,0,0,0)
     font_name:'Fonts/CaviarDreams.ttf'
-    font_size:sp(20)
+    font_size:'15sp'
     background_down:'Images/clickblue.png'
     on_press:
         self.clr=self.clr_before
         self.clr_before=self.clr_after
+        SoundLoader.load('Music/pop.wav').play()
     on_release:
         self.clr_before = self.clr
         
@@ -116,7 +115,7 @@ GameWindow:
             id:'Label'
             text:'DO  YOU  WANT  A  \n  NEW  GAME ?  '
             font_name:gb.bebas
-            font_size:sp(25)
+            font_size:app.fts
             outline_color:c.BLACK.hex()
             outline_width:5
             pos_hint:{'x':0,'y':0.2}
@@ -171,7 +170,7 @@ GameWindow:
             text:'ROCK'
             id:text1
             font_name:gb.caviar
-            font_size:sp(25)
+            font_size:app.fts
             pos_hint:{'center_x':0,'center_y':.55}
             outline_width:2
             outline_color:hexc(c.GREY7.hex())
@@ -181,7 +180,7 @@ GameWindow:
             text:'PAPERS'
             id:text2          
             font_name:gb.caviar
-            font_size:sp(25)
+            font_size:app.fts
             pos_hint:{'center_x':0,'center_y':.50}
             outline_width:2
             outline_color:hexc(c.GREY7.hex())
@@ -190,7 +189,7 @@ GameWindow:
             text:'SCISSORS'
             id:text3
             font_name:gb.caviar
-            font_size:sp(25)
+            font_size:app.fts
             pos_hint:{'center_x':0,'center_y':.45}
             outline_width:2
             outline_color:hexc(c.GREY7.hex())
@@ -240,7 +239,7 @@ GameWindow:
         Label:   
             text:'CHOOSE POINTS'
             font_name:gb.caviar
-            font_size:sp(30)
+            font_size:app.fts
             outline_color:c.BLACK.hex()
             outline_width:2
             
@@ -271,7 +270,7 @@ GameWindow:
                 width:200
                 outline_color:c.BLACK.hex()
                 outline_width:4
-                font_size:sp(20)
+                font_size:app.fts
                 background_color:0,0,0,0
                 background_normal:''
                 markup:True
@@ -300,9 +299,11 @@ GameWindow:
             background_color:(0,0,0,0)
             background_normal:''
             outline_color:c.BLACK.hex()
-            outline_width:5
+            outline_width:3.5
             src:'Images/orange.jpeg'
-            on_press:self.src = 'Images/clickblue.png'
+            on_press:
+                SoundLoader.load('Music/pop.wav').play()
+                self.src = 'Images/clickblue.png'
             on_release:
                 root.manager.transition = FadeTransition(duration=1)
                 root.manager.transition.direction = 'left'
@@ -333,7 +334,9 @@ GameWindow:
             background_color:(0,0,0,0)
             size_hint:.2,.1
             pos_hint:{'x':.2,'y':.1}
-            on_press:root.wiggle_once(self)
+            on_press:
+                root.wiggle_once(self)
+                SoundLoader.load('Music/click.wav').play()
      
      
         Button:           #papers  icon design  
@@ -346,7 +349,9 @@ GameWindow:
             background_color:(0,0,0,0)
             size_hint:.2,.1
             pos_hint:{'x':.3,'y':.8}
-            on_press:root.wiggle_once(self)
+            on_press:
+                root.wiggle_once(self)
+                SoundLoader.load('Music/click.wav').play()
             
         Button:           #rock  icon design  
             canvas.before:     
@@ -358,7 +363,9 @@ GameWindow:
             background_color:(0,0,0,0)
             size_hint:.15,.075
             pos_hint:{'x':.7,'y':.2}
-            on_press:root.wiggle_once(self)
+            on_press:
+                root.wiggle_once(self)
+                SoundLoader.load('Music/click.wav').play()
             
         GridLayout:    #Option Menu bar
             
@@ -639,6 +646,7 @@ GameWindow:
                 on_press:
                     root.call_back(self)
                     self.src='Images/rock_click.jpg'
+                                        
                 on_release:
                     self.src='Images/rock_sign.jpg'
               
@@ -654,7 +662,9 @@ GameWindow:
                 background_normal:''        
                 on_press:root.call_back(self)
                 src:'Images/paper_sign.jpg'
-                on_press:self.src='Images/paper_click.jpg'
+                on_press:
+                    self.src='Images/paper_click.jpg'
+                    
                 on_release:self.src='Images/paper_sign.jpg'
                 canvas:                  
                     RoundedRectangle:     
@@ -674,7 +684,9 @@ GameWindow:
                 background_normal:'' 
                 on_press:root.call_back(self)
                 src:'Images/scissors_sign.jpg'
-                on_press:self.src='Images/scissors_click.jpg'
+                on_press:
+                    self.src='Images/scissors_click.jpg'
+                    
                 on_release:self.src='Images/scissors_sign.jpg'
                 canvas:                  
                     RoundedRectangle:           
@@ -718,12 +730,12 @@ GameWindow:
             Label:   
                 text:'Volume'
                 font_name:'Fonts/CaviarDreams.ttf'
-                font_size:sp(30)
+                font_size:app.fts
               
                 Button:
                     canvas.before:
                         Color:
-                            rgb:hexc(c.PLUM.hex())
+                            rgb:hexc(c.TEAL.hex())
                         RoundedRectangle:
                             pos:self.pos
                             size:self.size
@@ -750,7 +762,7 @@ GameWindow:
             Label:
                 text:'Brightness'
                 font_name:'Fonts/CaviarDreams.ttf'
-                font_size:sp(30)
+                font_size:app.fts
                 
                 Button:
                     canvas.before:
