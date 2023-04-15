@@ -10,7 +10,7 @@ from kivy.uix.widget import Widget
 from kivy.animation import Animation
 from kivy.core.audio import SoundLoader
 from kivy.properties import ObjectProperty, NumericProperty, StringProperty
-from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition, SwapTransition
+from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition, RiseInTransition
 
 
 class Blast(Image):
@@ -284,7 +284,7 @@ class SecondWindow(Screen):
                 self.collision.bind(on_complete=lambda x, y: self.switch_to_fourth())
 
     def switch_to_fourth(self):
-        self.manager.transition = SwapTransition()
+        self.manager.transition = RiseInTransition()
         self.manager.transition.direction = 'left'
         self.manager.current = 'fourthwindow'
 
@@ -294,32 +294,33 @@ class SecondWindow(Screen):
 
 class ThirdWindow(Screen):
     count = 1
-    sound = None
     src = StringProperty("")
 
-    def toggle(self):
+    def __init__(self, **kwargs):
+        super(ThirdWindow, self).__init__(**kwargs)
+        self.app = App.get_running_app()
 
-        thrd = self.manager.get_screen('thirdwindow')
+    def toggle(self):
         self.count += 1
 
         if self.count % 2 != 0:
             self.src = 'Images/unmute.png'
-            thrd.music_stop()
+            self.music_stop()
         else:
             self.src = 'Images/mute.png'
-            thrd.music_play()
+            self.music_play()
 
     def music_play(self):
-        self.manager.sound.play()
+        self.app.bgsound.play()
 
     def music_stop(self):
-        self.manager.sound.stop()
+        self.app.bgsound.stop()
 
     def volume(self, *args):
-        self.manager.sound.volume = args[1]
+        self.app.bgsound.volume = args[1]
 
-    def brightness(*args):
-        App.get_running_app().root.opacity = args[1]
+    def brightness(self, *args):
+        self.app.root.opacity = args[1]
         # bg.set_brightness(args[1])
 
 
@@ -331,9 +332,7 @@ class FourthWindow(Screen):
         self.failure_sound = SoundLoader.load('Music/failure.wav')
 
     def on_enter(self):
-        print("entered")
-        Clock.schedule_once(lambda dt: self.animate_color(self.ids.layout), 2)
-        # vibrator.pattern(pattern=(0, 2), repeat=-1)
+        self.animate_color(self.ids.layout)
         self.result_func()
 
     def animate_color(self, ob):
@@ -348,7 +347,8 @@ class FourthWindow(Screen):
         elif gb.result == "BOT":
             anim &= Animation(clr=(1, 0, 0, .6), d=1)
             self.failure_sound.play()
-
+        else:
+            pass
         anim += Animation(clr=(0, 0, 0, .6), d=1)
         anim.bind(on_complete=lambda x, y: self.go_home())
 
@@ -377,15 +377,14 @@ class TransparentButton(Button):
 
 
 class GameWindow(ScreenManager):
-    sound = SoundLoader.load('Music/music.mp3')
-
-    def __init__(self, **kwargs):
-        super(GameWindow, self).__init__(**kwargs)
-        pass
+    pass
 
 
 class Main(App):
+    bgsound = SoundLoader.load('Music/bgmusic.wav')
+
     def build(self):
+        self.bgsound.volume = 1
         return GameWindow()
     # if platform != "android":
     #     Layout = FloatLayout()

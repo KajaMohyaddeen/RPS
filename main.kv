@@ -8,9 +8,10 @@
 #:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
 #:import SwapTransition kivy.uix.screenmanager.SwapTransition
-    
+#:import SoundLoader kivy.core.audio.SoundLoader
+
 <GameWindow>:
-    
+
     #SplashWindow:
     FirstWindow:
     InfoWindow:
@@ -18,7 +19,9 @@
     ThirdWindow:
     FourthWindow:
     FifthWindow:
-                               
+GameWindow:
+    sound:SoundLoader.load('Music/music.mp3')
+
 #Rounded Blue Button Class
 <TransparentButton>:
     canvas.before:
@@ -37,7 +40,7 @@
     background_normal:''
     background_color:(0,0,0,0)
     font_name:'Fonts/CaviarDreams.ttf'
-    font_size:sp(30)
+    font_size:sp(20)
     background_down:'Images/clickblue.png'
     on_press:
         self.clr=self.clr_before
@@ -704,7 +707,7 @@
                 source:'Images/blackpaper.jpg'
                 size:self.size
                 pos:self.pos
-                    
+
         BoxLayout:           
             orientation:'vertical'
             size_hint:0.6,0.4
@@ -715,9 +718,7 @@
             Label:   
                 text:'Volume'
                 font_name:'Fonts/CaviarDreams.ttf'
-                size_hint:1,None
-                height:dp(30)
-                font_size:'20sp'
+                font_size:sp(30)
               
                 Button:
                     canvas.before:
@@ -749,9 +750,7 @@
             Label:
                 text:'Brightness'
                 font_name:'Fonts/CaviarDreams.ttf'
-                size_hint:1,None
-                height:dp(30)
-                font_size:"30sp"
+                font_size:sp(30)
                 
                 Button:
                     canvas.before:
@@ -814,52 +813,52 @@
             
 <FourthWindow>:
     name:'fourthwindow'
-    size_hint:1,1
-    canvas:
-        Rectangle:
-            source:'Images/blackpaper.jpg'
-            pos: self.pos
-            size: self.size
-    
-    FloatLayout:        
-        size_hint:.7,.5
-        pos_hint:{'center_x':0.5,'center_y':0.5}
-        id:layout
-        clr:(0,0,0,.6)
 
+    FloatLayout:
         canvas:
-            Color:
-                rgba:self.clr
-            RoundedRectangle:
-                size:self.size
-                pos:self.pos
-                radius:[20]    
-                
-        Label:
-            id:text1
-            text:'winner is'
-            font_name:gb.bebas
-            font_size:self.parent.size[1]*.05
-            pos_hint:{'center_y':0.61,'left':0.3}
-            outline_color:c.BLACK.hex()
-            outline_width:5   
-            
-        Label:
-            id:winner
-            text:gb.result
-            font_size:self.parent.size[1]*.2
+            Rectangle:
+                source:'Images/blackpaper.jpg'
+                pos: self.pos
+                size: self.size
+        FloatLayout:
+            size_hint:.7,.5
             pos_hint:{'center_x':0.5,'center_y':0.5}
-            font_name:gb.bebas
-            outline_color:c.BLACK.hex()
-            outline_width:5
-            
-            Image:
-                source:'Images/star.png'
-                pos:winner.pos[0],winner.pos[1]
+            id:layout
+            clr:(0,0,0,.6)
 
-            
+            canvas:
+                Color:
+                    rgba:self.clr
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius:[20]
+
+            Label:
+                id:text1
+                text:'winner is'
+                font_name:gb.bebas
+                font_size:self.parent.size[1]*.05
+                pos_hint:{'center_y':0.61,'left':0.3}
+                outline_color:c.BLACK.hex()
+                outline_width:5
+
+            Label:
+                id:winner
+                text:gb.result
+                font_size:self.parent.size[1]*.2
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                font_name:gb.bebas
+                outline_color:c.BLACK.hex()
+                outline_width:5
+
+                Image:
+                    source:'Images/star.png'
+                    pos:winner.pos[0],winner.pos[1]
+
+
     TransparentButton:
-        
+
         text:'Back'
         size_hint:0.2,.1
         pos_hint:{'x':0.1,'y':0.1/2}
@@ -867,7 +866,11 @@
             root.manager.transition = FadeTransition(duration=1)
             root.manager.transition.direction = 'right'
             app.root.current = 'firstwindow'
-            
+
+
+
+
+
 <FifthWindow>:
     
     name:'fifthwindow'
